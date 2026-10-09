@@ -1,0 +1,22 @@
+
+# Môi trường ảo Python
+venv/
+.venv/
+
+# Biến môi trường và thông tin bí mật
+.env
+.env.*
+!.env.example
+
+# Database cục bộ
+*.db
+*.sqlite
+*.sqlite3
+
+# File Python sinh tự động
+__pycache__/
+*.py[cod]
+
+# Công cụ kiểm thử và IDE
+.pytest_cache/
+.vscode/
