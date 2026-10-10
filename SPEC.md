@@ -2,7 +2,7 @@
 Vai trò: khách hàng, admin (cột users.is_admin).
 Công nghệ: Python, FastAPI, SQLite + SQLAlchemy, Jinja2 + HTMX, Tailwind CDN,
 bcrypt băm mật khẩu, session cookie (SessionMiddleware), python-dotenv.
-LLM: [Claude API hoặc Gemini], chỉ gọi trong services/ai_service.py.
+LLM: [Gemini], chỉ gọi trong services/ai_service.py.
 Cấu trúc: app/main.py, database.py, models.py, routers/, services/, templates/, static/
 Bảng: users(id,email,password_hash,full_name,is_admin);
 laptops(id,name,brand,price,stock,cpu,ram_gb,storage_gb,gpu,has_dedicated_gpu,

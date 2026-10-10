@@ -20,3 +20,6 @@ __pycache__/
 # Công cụ kiểm thử và IDE
 .pytest_cache/
 .vscode/
+
+*.txt
+!requirements.txt
