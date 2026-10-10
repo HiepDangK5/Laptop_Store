@@ -1,12 +1,13 @@
 from pathlib import Path
 from urllib.parse import quote
 
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import distinct
 
+from app.auth import get_current_user
 from app.database import SessionLocal
-from app.models import Laptop
+from app.models import Laptop, User
 
 router = APIRouter()
 templates = Jinja2Templates(directory=str(Path(__file__).resolve().parent.parent / "templates"))
@@ -28,6 +29,7 @@ def product_image_url(laptop: Laptop) -> str | None:
 @router.get("/", name="home")
 def home(
     request: Request,
+    current_user: User | None = Depends(get_current_user),
     brand: str | None = None,
     min_price: str = "",
     max_price: str = "",
@@ -52,6 +54,7 @@ def home(
             name="index.html",
             context={
                 "title": "Laptop Store",
+                "current_user": current_user,
                 "laptops": laptops,
                 "image_urls": {laptop.id: product_image_url(laptop) for laptop in laptops},
                 "brands": brands,
@@ -63,7 +66,11 @@ def home(
 
 
 @router.get("/products/{laptop_id}", name="product_detail")
-def product_detail(request: Request, laptop_id: int):
+def product_detail(
+    request: Request,
+    laptop_id: int,
+    current_user: User | None = Depends(get_current_user),
+):
     with SessionLocal() as session:
         laptop = session.query(Laptop).filter(Laptop.id == laptop_id).first()
         if laptop is None:
@@ -74,6 +81,7 @@ def product_detail(request: Request, laptop_id: int):
             name="product_detail.html",
             context={
                 "title": laptop.name,
+                "current_user": current_user,
                 "laptop": laptop,
                 "image_url": product_image_url(laptop),
             },
