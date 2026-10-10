@@ -31,7 +31,9 @@
           <p class="mt-2 text-sm text-slate-600">Tồn kho: {{ laptop.stock }}</p>
 
           <div class="mt-6 flex flex-wrap gap-3">
-            <button type="button" class="rounded-lg border border-blue-700 px-5 py-3 font-semibold text-blue-700 hover:bg-blue-50">Thêm vào giỏ</button>
+            <form method="post" action="/cart/add/{{ laptop.id }}">
+              <button type="submit" class="rounded-lg border border-blue-700 px-5 py-3 font-semibold text-blue-700 hover:bg-blue-50">Thêm vào giỏ</button>
+            </form>
             <button type="button" class="rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">Mua hàng</button>
           </div>
 

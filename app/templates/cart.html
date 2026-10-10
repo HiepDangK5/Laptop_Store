@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }} - Laptop Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <header class="bg-slate-900 px-4 py-5 text-white">
+      <div class="mx-auto max-w-5xl">
+        {% include "partials/navbar.html" %}
+      </div>
+    </header>
+    <main class="mx-auto max-w-5xl px-4 py-8">
+      <h1 class="text-2xl font-bold">Giỏ hàng</h1>
+      {% if cart_lines %}
+        <div class="mt-5 space-y-4">
+          {% for line in cart_lines %}
+            <article class="flex flex-col gap-4 rounded-xl bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <a href="/products/{{ line.laptop.id }}" class="font-semibold text-slate-900 hover:text-blue-700">{{ line.laptop.name }}</a>
+                <p class="mt-1 text-sm text-slate-600">{{ "{:,.0f}".format(line.laptop.price).replace(",", ".") }} đ / sản phẩm</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-3">
+                <form method="post" action="/cart/update/{{ line.laptop.id }}" class="flex items-center gap-2">
+                  <label for="quantity-{{ line.laptop.id }}" class="text-sm">Số lượng</label>
+                  <input id="quantity-{{ line.laptop.id }}" type="number" name="quantity" min="1" value="{{ line.quantity }}" class="w-20 rounded-lg border border-slate-300 px-2 py-1">
+                  <button type="submit" class="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-100">Cập nhật</button>
+                </form>
+                <p class="min-w-32 text-right font-semibold">{{ "{:,.0f}".format(line.subtotal).replace(",", ".") }} đ</p>
+                <form method="post" action="/cart/remove/{{ line.laptop.id }}">
+                  <button type="submit" class="text-sm text-red-700 hover:text-red-900">Xóa</button>
+                </form>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+        <div class="mt-6 flex flex-col items-end gap-3 rounded-xl bg-white p-5 shadow-sm">
+          <p class="text-lg">Tổng tiền: <strong class="text-xl text-blue-700">{{ "{:,.0f}".format(total).replace(",", ".") }} đ</strong></p>
+          <a href="/" class="rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">Tiếp tục mua sắm</a>
+        </div>
+      {% else %}
+        <p class="mt-5 rounded-xl bg-white p-8 text-center text-slate-600 shadow-sm">Giỏ hàng đang trống.</p>
+        <a href="/" class="mt-4 inline-block font-semibold text-blue-700 hover:text-blue-900">← Quay lại cửa hàng</a>
+      {% endif %}
+    </main>
+  </body>
+</html>
