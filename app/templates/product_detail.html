@@ -16,9 +16,9 @@
 
     <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
       <div class="grid gap-8 rounded-2xl bg-white p-5 shadow-sm md:grid-cols-2 md:p-8">
-        <div class="flex min-h-64 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
-          {% if laptop.image_url %}
-            <img src="{{ laptop.image_url }}" alt="{{ laptop.name }}" class="max-h-96 w-full object-contain">
+        <div class="flex aspect-video items-center justify-center overflow-hidden rounded-xl bg-slate-100">
+          {% if image_url %}
+            <img src="{{ image_url }}" alt="{{ laptop.name }}" class="h-full w-full object-contain">
           {% else %}
             <span class="text-slate-500">Chưa có ảnh sản phẩm</span>
           {% endif %}

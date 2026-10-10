@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import quote
 
 from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.templating import Jinja2Templates
@@ -9,6 +10,19 @@ from app.models import Laptop
 
 router = APIRouter()
 templates = Jinja2Templates(directory=str(Path(__file__).resolve().parent.parent / "templates"))
+IMAGE_DIR = Path(__file__).resolve().parent.parent / "static" / "images"
+IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp"}
+
+
+def product_image_url(laptop: Laptop) -> str | None:
+    # Ưu tiên đường dẫn đã lưu; nếu trống thì tìm ảnh cùng tên sản phẩm.
+    if laptop.image_url:
+        return laptop.image_url
+
+    for image_path in IMAGE_DIR.glob(f"{laptop.name}.*"):
+        if image_path.is_file() and image_path.suffix.lower() in IMAGE_SUFFIXES:
+            return f"/static/images/{quote(image_path.name)}"
+    return None
 
 
 @router.get("/", name="home")
@@ -39,6 +53,7 @@ def home(
             context={
                 "title": "Laptop Store",
                 "laptops": laptops,
+                "image_urls": {laptop.id: product_image_url(laptop) for laptop in laptops},
                 "brands": brands,
                 "selected_brand": brand or "",
                 "min_price": min_price,
@@ -57,5 +72,9 @@ def product_detail(request: Request, laptop_id: int):
         return templates.TemplateResponse(
             request=request,
             name="product_detail.html",
-            context={"title": laptop.name, "laptop": laptop},
+            context={
+                "title": laptop.name,
+                "laptop": laptop,
+                "image_url": product_image_url(laptop),
+            },
         )
