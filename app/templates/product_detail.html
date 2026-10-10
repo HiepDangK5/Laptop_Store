@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <header class="bg-slate-900 text-white">
+      <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
+        <a href="/" class="text-sm text-slate-300 hover:text-white">← Quay lại danh sách</a>
+        <h1 class="mt-2 text-2xl font-bold">{{ laptop.name }}</h1>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="grid gap-8 rounded-2xl bg-white p-5 shadow-sm md:grid-cols-2 md:p-8">
+        <div class="flex min-h-64 items-center justify-center overflow-hidden rounded-xl bg-slate-100">
+          {% if laptop.image_url %}
+            <img src="{{ laptop.image_url }}" alt="{{ laptop.name }}" class="max-h-96 w-full object-contain">
+          {% else %}
+            <span class="text-slate-500">Chưa có ảnh sản phẩm</span>
+          {% endif %}
+        </div>
+
+        <section>
+          <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">{{ laptop.brand }}</p>
+          <h2 class="mt-2 text-3xl font-bold text-blue-700">{{ "{:,.0f}".format(laptop.price).replace(",", ".") }} đ</h2>
+          <p class="mt-2 text-sm text-slate-600">Tồn kho: {{ laptop.stock }}</p>
+
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button type="button" class="rounded-lg border border-blue-700 px-5 py-3 font-semibold text-blue-700 hover:bg-blue-50">Thêm vào giỏ</button>
+            <button type="button" class="rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">Mua hàng</button>
+          </div>
+
+          <h3 class="mt-8 text-lg font-semibold">Thông số sản phẩm</h3>
+          <dl class="mt-3 divide-y divide-slate-200 rounded-lg border border-slate-200 text-sm">
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">CPU</dt><dd class="text-right">{{ laptop.cpu or "Chưa cập nhật" }}</dd></div>
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">RAM</dt><dd class="text-right">{{ laptop.ram_gb ~ " GB" if laptop.ram_gb is not none else "Chưa cập nhật" }}</dd></div>
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">Lưu trữ</dt><dd class="text-right">{{ laptop.storage_gb ~ " GB" if laptop.storage_gb is not none else "Chưa cập nhật" }}</dd></div>
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">GPU</dt><dd class="text-right">{{ laptop.gpu or "Chưa cập nhật" }}</dd></div>
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">GPU rời</dt><dd class="text-right">{{ "Có" if laptop.has_dedicated_gpu else "Không" }}</dd></div>
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">Màn hình</dt><dd class="text-right">{{ laptop.screen_inch ~ " inch" if laptop.screen_inch is not none else "Chưa cập nhật" }}</dd></div>
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">Khối lượng</dt><dd class="text-right">{{ laptop.weight_kg ~ " kg" if laptop.weight_kg is not none else "Chưa cập nhật" }}</dd></div>
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">Pin</dt><dd class="text-right">{{ laptop.battery_wh ~ " Wh" if laptop.battery_wh is not none else "Chưa cập nhật" }}</dd></div>
+            <div class="flex justify-between gap-4 p-3"><dt class="font-medium text-slate-600">Nhu cầu</dt><dd class="text-right">{{ laptop.use_tags or "Chưa cập nhật" }}</dd></div>
+          </dl>
+
+          {% if laptop.description %}
+            <h3 class="mt-6 text-lg font-semibold">Mô tả</h3>
+            <p class="mt-2 whitespace-pre-line text-slate-600">{{ laptop.description }}</p>
+          {% endif %}
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
