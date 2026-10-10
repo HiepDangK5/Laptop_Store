@@ -1,4 +1,5 @@
 from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from app.database import Base
@@ -12,6 +13,8 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
     is_admin = Column(Boolean, nullable=False, default=False)
+
+    orders = relationship("Order", back_populates="user")
 
 
 class Laptop(Base):
@@ -34,6 +37,8 @@ class Laptop(Base):
     image_url = Column(String)
     description = Column(Text)
 
+    order_items = relationship("OrderItem", back_populates="laptop")
+
 
 class Order(Base):
     __tablename__ = "orders"
@@ -47,6 +52,9 @@ class Order(Base):
     status = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
 
+    user = relationship("User", back_populates="orders")
+    items = relationship("OrderItem", back_populates="order")
+
 
 class OrderItem(Base):
     __tablename__ = "order_items"
@@ -56,3 +64,6 @@ class OrderItem(Base):
     laptop_id = Column(Integer, ForeignKey("laptops.id"), nullable=False)
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Integer, nullable=False)
+
+    order = relationship("Order", back_populates="items")
+    laptop = relationship("Laptop", back_populates="order_items")
