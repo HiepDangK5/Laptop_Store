@@ -34,7 +34,9 @@
             <form method="post" action="/cart/add/{{ laptop.id }}">
               <button type="submit" class="rounded-lg border border-blue-700 px-5 py-3 font-semibold text-blue-700 hover:bg-blue-50">Thêm vào giỏ</button>
             </form>
-            <button type="button" class="rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">Mua hàng</button>
+            <form method="post" action="/checkout/buy/{{ laptop.id }}">
+              <button type="submit" class="rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">Mua hàng</button>
+            </form>
           </div>
 
           <h3 class="mt-8 text-lg font-semibold">Thông số sản phẩm</h3>

@@ -35,6 +35,15 @@ async def read_form(request: Request) -> dict[str, str]:
     return {key: values[0] for key, values in parse_qs(body).items() if values}
 
 
+def set_user_session(request: Request, user_id: int):
+    # Làm mới thông tin đăng nhập nhưng giữ giỏ khách đang có trong session.
+    cart = request.session.get("cart")
+    request.session.clear()
+    if isinstance(cart, dict):
+        request.session["cart"] = cart
+    request.session["user_id"] = user_id
+
+
 @router.get("/register", name="register")
 def register_page(request: Request):
     return render_auth_page(request, "register")
@@ -80,14 +89,15 @@ async def register(request: Request):
         user_id = user.id
 
     # Tạo tài khoản xong thì đăng nhập luôn bằng user_id trong session.
-    request.session.clear()
-    request.session["user_id"] = user_id
+    set_user_session(request, user_id)
     return RedirectResponse(url="/", status_code=303)
 
 
 @router.get("/login", name="login")
 def login_page(request: Request):
-    return render_auth_page(request, "login")
+    return render_auth_page(
+        request, "login", next_url=request.query_params.get("next", "/")
+    )
 
 
 @router.post("/login")
@@ -103,16 +113,26 @@ async def login(request: Request):
             valid_password = bcrypt.checkpw(password.encode("utf-8"), user.password_hash.encode("utf-8"))
         if not valid_password:
             return render_auth_page(
-                request, "login", "Email hoặc mật khẩu không đúng.", email=email
+                request,
+                "login",
+                "Email hoặc mật khẩu không đúng.",
+                email=email,
+                next_url=form.get("next", "/"),
             )
         user_id = user.id
 
-    request.session.clear()
-    request.session["user_id"] = user_id
-    return RedirectResponse(url="/", status_code=303)
+    set_user_session(request, user_id)
+    next_url = form.get("next", "/")
+    # Chỉ cho phép đường dẫn tương đối nội bộ để tránh redirect ra website khác.
+    if not next_url.startswith("/") or next_url.startswith("//"):
+        next_url = "/"
+    return RedirectResponse(url=next_url, status_code=303)
 
 
 @router.post("/logout", name="logout")
 def logout(request: Request):
+    cart = request.session.get("cart")
     request.session.clear()
+    if isinstance(cart, dict):
+        request.session["cart"] = cart
     return RedirectResponse(url="/", status_code=303)

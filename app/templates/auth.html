@@ -20,6 +20,9 @@
         {% endif %}
 
         <form method="post" action="/{{ mode }}" class="mt-6 space-y-4">
+          {% if mode == "login" and next_url %}
+            <input type="hidden" name="next" value="{{ next_url }}">
+          {% endif %}
           {% if mode == "register" %}
             <label class="block text-sm font-medium">
               Họ và tên

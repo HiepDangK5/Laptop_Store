@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }} - Laptop Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <header class="bg-slate-900 px-4 py-5 text-white">
+      <div class="mx-auto max-w-5xl">{% include "partials/navbar.html" %}</div>
+    </header>
+    <main class="mx-auto grid max-w-5xl gap-8 px-4 py-8 md:grid-cols-2">
+      <section>
+        <h1 class="text-2xl font-bold">Thông tin nhận hàng</h1>
+        {% if error %}<p role="alert" class="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ error }}</p>{% endif %}
+        <form method="post" action="/checkout" class="mt-5 space-y-4 rounded-xl bg-white p-5 shadow-sm">
+          <label class="block text-sm font-medium">
+            Tên người nhận
+            <input type="text" name="receiver_name" value="{{ receiver_name or current_user.full_name }}" required class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2">
+          </label>
+          <label class="block text-sm font-medium">
+            Số điện thoại
+            <input type="tel" name="phone" value="{{ phone or '' }}" required class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2">
+          </label>
+          <label class="block text-sm font-medium">
+            Địa chỉ nhận hàng
+            <textarea name="address" rows="3" required class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2">{{ address or '' }}</textarea>
+          </label>
+          <p class="rounded-lg bg-slate-50 p-3 text-sm text-slate-700">Phương thức thanh toán: <strong>Thanh toán khi nhận hàng (COD)</strong></p>
+          <button type="submit" class="w-full rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">Đặt hàng</button>
+        </form>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold">Đơn hàng</h2>
+        {% if cart_lines %}
+          <div class="mt-5 space-y-3 rounded-xl bg-white p-5 shadow-sm">
+            {% for line in cart_lines %}
+              <div class="flex justify-between gap-4 text-sm">
+                <span>{{ line.laptop.name }} × {{ line.quantity }}</span>
+                <span class="whitespace-nowrap">{{ "{:,.0f}".format(line.subtotal).replace(",", ".") }} đ</span>
+              </div>
+            {% endfor %}
+            <div class="flex justify-between border-t border-slate-200 pt-3 font-semibold">
+              <span>Tổng tiền</span>
+              <span class="text-blue-700">{{ "{:,.0f}".format(total).replace(",", ".") }} đ</span>
+            </div>
+          </div>
+        {% else %}
+          <p class="mt-5 rounded-xl bg-white p-5 text-slate-600 shadow-sm">Giỏ hàng không còn sản phẩm hợp lệ.</p>
+        {% endif %}
+      </section>
+    </main>
+  </body>
+</html>

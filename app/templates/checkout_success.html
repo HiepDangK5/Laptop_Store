@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }} - Laptop Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <header class="bg-slate-900 px-4 py-5 text-white">
+      <div class="mx-auto max-w-5xl">{% include "partials/navbar.html" %}</div>
+    </header>
+    <main class="mx-auto max-w-2xl px-4 py-12">
+      <section class="rounded-2xl bg-white p-8 text-center shadow-sm">
+        <h1 class="text-3xl font-bold text-green-700">Cảm ơn bạn đã đặt hàng!</h1>
+        <p class="mt-4 text-slate-600">Mã đơn hàng: <strong>#{{ order.id }}</strong></p>
+        <p class="mt-2 text-slate-600">Tổng tiền: <strong>{{ "{:,.0f}".format(order.total).replace(",", ".") }} đ</strong></p>
+        <p class="mt-1 text-sm text-slate-500">Thanh toán khi nhận hàng (COD).</p>
+        <a href="/" class="mt-6 inline-block rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white hover:bg-blue-800">Tiếp tục mua sắm</a>
+      </section>
+    </main>
+  </body>
+</html>
