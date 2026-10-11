@@ -1,0 +1,29 @@
+{% for message in history %}
+  <div class="rounded-xl p-3 text-sm {% if message.role == 'user' %}ml-8 bg-blue-100 text-blue-950{% else %}mr-5 bg-slate-100 text-slate-800{% endif %}">
+    <p class="mb-1 text-xs font-semibold">{% if message.role == 'user' %}Bạn{% else %}Tư vấn{% endif %}</p>
+    <p class="whitespace-pre-line">{{ message.content }}</p>
+  </div>
+{% endfor %}
+{% if chat_error %}
+  <p class="rounded-lg bg-amber-50 p-3 text-sm text-amber-900" role="alert">{{ chat_error }}</p>
+{% endif %}
+{% if laptops %}
+  <div class="space-y-2 pt-1">
+    {% for laptop in laptops %}
+      <article class="flex gap-3 rounded-xl border border-slate-200 p-2">
+        <div class="h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+          {% if image_urls[laptop.id] %}
+            <img src="{{ image_urls[laptop.id] }}" alt="{{ laptop.name }}" class="h-full w-full object-cover">
+          {% else %}
+            <div class="flex h-full items-center justify-center px-1 text-center text-xs text-slate-500">Chưa có ảnh</div>
+          {% endif %}
+        </div>
+        <div class="min-w-0 flex-1">
+          <h3 class="line-clamp-2 text-sm font-semibold text-slate-900">{{ laptop.name }}</h3>
+          <p class="mt-1 text-sm font-bold text-blue-700">{{ "{:,.0f}".format(laptop.price).replace(",", ".") }} đ</p>
+          <a href="/products/{{ laptop.id }}" class="mt-1 inline-block text-sm font-medium text-blue-700 hover:underline">Xem chi tiết →</a>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% endif %}

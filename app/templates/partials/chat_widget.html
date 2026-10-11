@@ -1,0 +1,26 @@
+<aside class="fixed bottom-4 right-4 z-50 w-[min(24rem,calc(100vw-2rem))]">
+  <details class="group">
+    <summary class="ml-auto flex w-fit cursor-pointer list-none items-center gap-2 rounded-full bg-blue-700 px-5 py-3 font-semibold text-white shadow-lg hover:bg-blue-800">
+      <span>Tư vấn laptop</span>
+      <span aria-hidden="true" class="group-open:hidden">⌃</span>
+      <span aria-hidden="true" class="hidden group-open:inline">⌄</span>
+    </summary>
+    <section class="mt-3 overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200">
+      <div class="bg-slate-900 px-4 py-3 text-white">
+        <h2 class="font-semibold">Trợ lý chọn laptop</h2>
+        <p class="text-xs text-slate-300">Cho biết ngân sách và nhu cầu sử dụng của bạn</p>
+      </div>
+      <div id="chat-messages" class="max-h-[55vh] space-y-3 overflow-y-auto p-4" aria-live="polite">
+        <p class="rounded-xl bg-slate-100 p-3 text-sm text-slate-700">Xin chào! Bạn đang tìm laptop cho nhu cầu nào?</p>
+      </div>
+      <form hx-post="/chat" hx-target="#chat-messages" hx-swap="innerHTML" hx-indicator="find .htmx-indicator" class="border-t border-slate-200 p-3">
+        <label for="chat-question" class="sr-only">Câu hỏi tư vấn laptop</label>
+        <textarea id="chat-question" name="question" required maxlength="500" rows="2" placeholder="Nhập câu hỏi (tối đa 500 ký tự)" class="block w-full resize-y rounded-lg border border-slate-300 p-2 text-sm focus:border-blue-600 focus:outline-none"></textarea>
+        <div class="mt-2 flex items-center justify-between">
+          <span class="htmx-indicator text-xs text-slate-500">Đang tìm laptop...</span>
+          <button type="submit" class="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800">Gửi</button>
+        </div>
+      </form>
+    </section>
+  </details>
+</aside>

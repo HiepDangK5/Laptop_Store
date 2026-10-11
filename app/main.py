@@ -5,6 +5,7 @@ from app import models  # noqa: F401 - nạp model để SQLAlchemy tạo đủ 
 from app.database import Base, engine
 from app.routers.auth import router as auth_router
 from app.routers.cart import router as cart_router
+from app.routers.chat import router as chat_router
 from app.routers.checkout import router as checkout_router
 from app.routers.products import router as products_router
 from dotenv import load_dotenv
@@ -26,6 +27,7 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="stat
 app.include_router(products_router)
 app.include_router(auth_router)
 app.include_router(cart_router)
+app.include_router(chat_router)
 app.include_router(checkout_router)
 
 # Tạo các bảng SQLite theo model khi ứng dụng khởi động.

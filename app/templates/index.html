@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
   </head>
   <body class="min-h-screen bg-slate-50 text-slate-900">
     <header class="bg-slate-900 text-white">
@@ -72,5 +73,6 @@
         <p class="rounded-xl bg-white p-8 text-center text-slate-600 shadow-sm">Không tìm thấy laptop phù hợp với bộ lọc.</p>
       {% endif %}
     </main>
+    {% include "partials/chat_widget.html" %}
   </body>
 </html>
